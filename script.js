@@ -27,46 +27,60 @@ function operate(x, op, y) {
 }
 
 // Will store the values
-let operator = null;
-let num1 = null;
-let num2 = null;
+let operator = '';
+let num1 = '';
+let num2 = '';
+let result = null;
 
-// Display button contentsgit 
-const display = document.querySelector('h1');
-const digitButtons = document.querySelectorAll('button.digit');
-const operatorButtons = document.querySelectorAll('button.operator')
-digitButtons.forEach(button => button.addEventListener('click', displayDigit));
-operatorButtons.forEach(button => button.addEventListener('click', displayOperator));
+const mainDisplay = document.querySelector('.display h1');
+const subDisplay = mainDisplay.nextElementSibling;
+const digitButtons = document.querySelectorAll('.button.digit');
+const operatorButtons = document.querySelectorAll('.button.operator');
 
-function displayDigit(event) {
-  let element = event.target;
-  if (isDisplayEmpty())
-    display.textContent = element.textContent;
-  else {
-    display.textContent += element.textContent;
+
+//Dispaly digits on click
+digitButtons.forEach(button => button.addEventListener('click', handelDigitClick));
+
+function handelDigitClick(event) {
+  if (operator === '') {
+    num1 += event.target.textContent;
+    mainDisplay.textContent = num1;
+  } else {
+    num2 += event.target.textContent;
+    // get the num2 portion and splice?
+    if (num2.length > 1) {
+      let slicedNum= num2.slice(0, -1);
+      let numbers = mainDisplay.textContent.split(operator);
+      numbers[1] = ` ${num2}`;
+      let newDisplyText = numbers.join(operator);
+      mainDisplay.textContent = newDisplyText;
+      
+    }
+    else {
+      mainDisplay.textContent += num2;
+    }
+    result = operate(+num1, operator, +num2);
+    subDisplay.textContent = result;
+    
   }
+
+
 }
 
-function displayOperator(event) {
-  let element = event.target;
-  display.textContent += ` ${element.textContent} `;
-  operator = element.textContent;
+
+// On operator click
+operatorButtons.forEach(button => button.addEventListener('click', handleOperatorClick));
+
+function handleOperatorClick(event) {
+  mainDisplay.textContent += ` ${event.target.textContent} `;
+  operator = event.target.textContent;
+
 }
 
-function isDisplayEmpty() {
-  return display.textContent === "Calculator";
-}
+// Show Result
+// const equalButton = document.querySelector('.button.equal');
+// equalButton.addEventListener('click', () => )
 
-// Equal(=) button
-document.querySelector('.equal').addEventListener('click', displayResult)
+// function handleEqualClick() {
 
-function displayResult() {
-  [num1, num2] = display.textContent
-    .split(operator)
-    .map(number => parseInt(number));
-    let results = operate(num1, operator, num2);
-    display.textContent = results;
-}
-// Clear button
-document.querySelector('.clear')
-  .addEventListener('click', () => display.textContent = '');
+// }
