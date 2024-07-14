@@ -3,6 +3,7 @@
 // Fuctions used for calculation
 function add(a, b) {
   return a + b;
+
 }
 
 function subtract(a, b) {
@@ -77,7 +78,7 @@ function handleOperatorClick(event) {
     mainDisplay.textContent += ` ${event.target.textContent} `;
     operator = event.target.textContent;
     // operatorButtons.forEach(button => button.disabled = true);
-    decimalButton.disabled  = false;
+    decimalButton.disabled = false;
   }
 }
 
@@ -112,14 +113,59 @@ const decimalButton = document.querySelector('.button.decimal');
 decimalButton.addEventListener('click', handleDecimalClick);
 
 function handleDecimalClick() {
-  if(operator === '' && !num1.includes('.')) {
+  if (operator === '' && !num1.includes('.')) {
     num1 += '.';
     mainDisplay.textContent += '.';
-    decimalButton.disabled = true;  //Prevent adding aanymore decimals to the number
-  } else if(!num2.includes('.')) {
+    //decimalButton.disabled = true;  //Prevent adding aanymore decimals to the number
+  } else if (operator !== '' && !num2.includes('.')) {
     num2 += '.';
     mainDisplay.textContent += '.';
   }
-  
+
+}
+
+//------------------------------Show Result ---------------------------------------
+const equalButton = document.querySelector('.button.equal');
+equalButton.addEventListener('click', handleEqualClick);
+
+function handleEqualClick() {
+  if (isValidNumber(num1) && isValidNumber(num2)) {
+    num1 = subDisplay.textContent;
+    subDisplay.textContent = '';
+    mainDisplay.textContent = num1;
+    operator = '';
+    num2 = '';
+  }
+}
+
+function isValidNumber(number) {
+  return (number !== '' && !Number.isNaN(+number));
+}
+
+// ---------------Clear and Delete-----------------------------------
+const clearButton = document.querySelector('.button.clear');
+const deleteButton = document.querySelector('.button.delete');
+
+clearButton.addEventListener('click', () => {
+  mainDisplay.textContent = '';
+  subDisplay.textContent = '';
+  num1 = num2 = operator = '';
+});
+
+
+deleteButton.addEventListener('click', handleDelete);
+
+function handleDelete() {
+
+  if (operator === '') {
+    mainDisplay.textContent = mainDisplay.textContent.slice(0, -1);
+    num1 = mainDisplay.textContent;
+  } else if (operator !== '' && num2 === '') {
+    mainDisplay.textContent = mainDisplay.textContent.slice(0, -3);
+    operator = '';
+  } else {
+    mainDisplay.textContent = mainDisplay.textContent.slice(0, -1);
+    num2 = mainDisplay.textContent.split(operator)[1].trim();
+  }
 }
 
