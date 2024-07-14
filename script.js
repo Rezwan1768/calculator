@@ -2,20 +2,28 @@
 
 // Fuctions used for calculation
 function add(a, b) {
-  return a + b;
-
+  return round(a + b);
+  
 }
 
 function subtract(a, b) {
-  return a - b;
+  return round(a - b);
 }
 
 function multiply(a, b) {
-  return a * b;
+  return round(a * b);
 }
 
 function divide(a, b) {
-  return a / b;
+  return round(a / b);
+}
+
+// Round foating point numbers
+function round(result) {
+  if(!Number.isInteger(result)) {
+    return +result.toFixed(2)
+  }
+  return result;
 }
 
 function operate(x, op, y) {
@@ -157,15 +165,15 @@ deleteButton.addEventListener('click', handleDelete);
 
 function handleDelete() {
 
-  if (operator === '') {
+  if(operator === '') {
     mainDisplay.textContent = mainDisplay.textContent.slice(0, -1);
     num1 = mainDisplay.textContent;
-  } else if (operator !== '' && num2 === '') {
+  } else if(operator !== '' && num2 === '') {
     mainDisplay.textContent = mainDisplay.textContent.slice(0, -3);
     operator = '';
   } else {
     mainDisplay.textContent = mainDisplay.textContent.slice(0, -1);
-    num2 = mainDisplay.textContent.split(operator)[1].trim();
+   num2 = mainDisplay.textContent.split(operator)[1].trim();
   }
 }
 
